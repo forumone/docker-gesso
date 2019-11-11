@@ -22,7 +22,7 @@ RUN set -ex \
   && tar -xf "node-v${NODE_VERSION}.tar.xz" \
   && cd "node-v${NODE_VERSION}" \
   && ./configure \
-  && make -j$(nproc) \
+  && make -j$(nproc) >/dev/null \
   && make install \
   && cd /tmp \
   && rm -r "node-v${NODE_VERSION}" "node-v${NODE_VERSION}.tar.xz" SHASUMS256.txt \
