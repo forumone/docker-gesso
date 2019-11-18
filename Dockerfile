@@ -27,4 +27,12 @@ RUN set -ex \
   && cd /tmp \
   && rm -r "node-v${NODE_VERSION}" "node-v${NODE_VERSION}.tar.xz" SHASUMS256.txt \
   && apk del .build-deps \
-  && npm i -g gulp-cli
+  && npm i -g envinfo gulp-cli
+
+# Default working directory to /app - this gives folks a predicable location for builds
+# and artifacts.
+WORKDIR /app
+
+# Due to https://github.com/tabrindle/envinfo/issues/81, we have to make sure that --system
+# isn't passed since the command will hang indefinitely otherwise.
+CMD [ "envinfo", "--title=Tools in this container", "--npmGlobalPackages", "--languages", "--managers", "--binaries" ]
