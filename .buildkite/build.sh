@@ -41,7 +41,7 @@ should-push() {
     test "$BUILDKITE_BRANCH" == master
 }
 
-# if should-push; then
-#   echo "--- Push"
-#   docker push "$repository"
-# fi
+if should-push; then
+  echo "--- Push"
+  docker push "$repository"
+fi
