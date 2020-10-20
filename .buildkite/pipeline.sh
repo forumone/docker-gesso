@@ -34,7 +34,7 @@ create-step() {
   # Output the Buildkite step for building this particular version
   cat <<YAML
   - label: ":docker: :docker-gesso: v$label"
-    concurrency: 5
+    concurrency: 6
     concurrency_group: "f1/docker"
     commands:
       - bash .buildkite/build.sh $php_version $node_version $tags
