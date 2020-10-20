@@ -3,13 +3,13 @@
 set -euo pipefail
 shopt -s extglob
 
-gesso_version="2"
+gesso_version="4"
 
 declare -A node_versions=(
   # TODO remove v10 after EOL: 2021-04-30
   [10.22.1]="node-v10"
 
-  # TODO remove v12 after EOL: 2022-04-30
+  # # TODO remove v12 after EOL: 2022-04-30
   [12.19.0]="node-v12 node-lts node-stable"
 
   # TODO remove v14 after EOL: 2023-04-30

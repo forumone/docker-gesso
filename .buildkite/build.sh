@@ -15,18 +15,17 @@ docker build . \
   --build-arg PHP_VERSION="$php_version" \
   --build-arg NODE_VERSION="$node_version"
 
-# Sanity check: Ensure built image is compatible with Gesso 3.x
+# Sanity check: Ensure built image is compatible with Gesso 4.x
 echo "--- Test"
 docker run --rm -it \
   "$repository:latest" \
   sh -c '
-    curl -sSLO https://github.com/forumone/gesso/archive/8.x-3.x.zip &&
-    unzip 8.x-3.x.zip &&
-    cd gesso-8.x-3.x &&
+    curl -sSLO "https://github.com/forumone/gesso/archive/4.x.zip" &&
+    unzip "4.x.zip" &&
+    cd "gesso-4.x" &&
     npm ci &&
     gulp build
   '
-
 
 # Usage: should-push
 #
