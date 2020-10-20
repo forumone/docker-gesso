@@ -10,7 +10,6 @@ ancillary_tags="$3"
 
 echo "--- Build"
 docker build . \
-  --tag "$repository:latest" \
   --tag "$ancillary_tags" \
   --build-arg PHP_VERSION="$php_version" \
   --build-arg NODE_VERSION="$node_version"

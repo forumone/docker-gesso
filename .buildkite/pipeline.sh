@@ -10,10 +10,10 @@ declare -A node_versions=(
   [10.22.1]="node-v10"
 
   # # TODO remove v12 after EOL: 2022-04-30
-  [12.19.0]="node-v12 node-lts node-stable"
+  [12.19.0]="node-v12"
 
   # TODO remove v14 after EOL: 2023-04-30
-  [14.14.0]="node-v14 node-current node-latest"
+  [14.14.0]="node-v14"
 )
 
 declare -A php_versions=(
@@ -21,7 +21,7 @@ declare -A php_versions=(
   [7.3]="php-7.3"
 
   # TODO remove 7.4 after EOL: 2022-11-28
-  [7.4]="php-7.4 php-latest"
+  [7.4]="php-7.4"
 )
 
 # Usage: create-step <php_version> <node_version> <tags> <label>
@@ -56,8 +56,8 @@ YAML
 
 for node_version in "${!node_versions[@]}"; do
   for php_version in "${!php_versions[@]}"; do
-    tags="${node_versions[$node_version]} ${php_versions[$php_version]}"
-    label="${gesso_version}-$php_version-$node_version"
+    tags="${gesso_version}-${node_versions[$node_version]}-${php_versions[$php_version]}"
+    label="${gesso_version}-${node_versions[$node_version]}-${php_versions[$php_version]}"
     create-step "$php_version" "$node_version" "$tags" "$label"
   done
 done
