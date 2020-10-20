@@ -1,10 +1,4 @@
 steps:
-  - label: ":docker: Build"
-    command: bash .buildkite/build.sh
-    plugins:
-      - seek-oss/aws-sm#v2.0.0:
-          env:
-            DOCKER_LOGIN_PASSWORD: buildkite/dockerhubid
-      - docker-login#v2.0.1:
-          username: f1builder
-          password-env: DOCKER_LOGIN_PASSWORD
+  - label: ":pipeline:"
+    commands:
+      - bash .buildkite/pipeline.sh | buildkite-agent pipeline upload

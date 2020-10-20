@@ -15,7 +15,7 @@ RUN set -ex \
     libgcc \
     linux-headers \
     make \
-    python \
+    python2 \
   && curl --fail --show-error --silent --remote-name "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}.tar.xz" \
   && curl --fail --show-error --silent --remote-name "https://nodejs.org/dist/v${NODE_VERSION}/SHASUMS256.txt" \
   && grep " node-v${NODE_VERSION}.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
