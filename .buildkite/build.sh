@@ -20,9 +20,9 @@ echo "--- Test"
 docker run --rm -it \
   "$repository:latest" \
   sh -c '
-    curl -sSLO https://github.com/forumone/gesso/archive/8.x-3.x.zip &&
-    unzip 8.x-3.x.zip &&
-    cd gesso-8.x-3.x &&
+    curl -sSLO https://github.com/forumone/gesso/archive/4.x.zip &&
+    unzip 4.x.zip &&
+    cd gesso-4.x &&
     npm ci &&
     gulp build
   '
