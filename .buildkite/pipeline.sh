@@ -3,8 +3,6 @@
 set -euo pipefail
 shopt -s extglob
 
-gesso_version="4"
-
 declare -A node_versions=(
   # TODO remove v10 after EOL: 2021-04-30
   [10.22.1]="node-v10"
@@ -24,20 +22,29 @@ declare -A php_versions=(
   [7.4]="php-7.4"
 )
 
-# Usage: create-step <php_version> <node_version> <label>
+declare -A gesso_versions=(
+  # Key is used for tagging while the value is used for the github archive
+  # This is unforunately backwards from the above due to limitations on the key in shell
+  [3]='8.x-3.x'
+  [4]="4.x"
+)
+
+# Usage: create-step <php_version> <node_version> <gesso_pathname> <label>
 create-step() {
   local php_version="$1"
   local node_version="$2"
-  local tags="$3"
-  local label="$3"
+  local gesso_pathname="$3"
+  local label="$4"
 
   # Output the Buildkite step for building this particular version
   cat <<YAML
   - label: ":docker: :docker-gesso: v$label"
+    agents:
+      queue: docker-builders
     concurrency: 6
     concurrency_group: "f1/docker"
     commands:
-      - bash .buildkite/build.sh $php_version $node_version $tags
+      - bash .buildkite/build.sh $php_version $node_version $gesso_pathname $label
 YAML
 
   # Use authentication plugins if we're building somewhere other than on a local machine
@@ -54,9 +61,11 @@ YAML
   fi
 }
 
-for node_version in "${!node_versions[@]}"; do
-  for php_version in "${!php_versions[@]}"; do
-    tags="${gesso_version}-${node_versions[$node_version]}-${php_versions[$php_version]}"
-    create-step "$php_version" "$node_version" "$tags"
+for gesso_version in "${!gesso_versions[@]}"; do
+  for node_version in "${!node_versions[@]}"; do
+    for php_version in "${!php_versions[@]}"; do
+      tags="${gesso_version}-${node_versions[$node_version]}-${php_versions[$php_version]}"
+      create-step "$php_version" "$node_version" "${gesso_versions[$gesso_version]}" "$tags"
+    done
   done
 done
