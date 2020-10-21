@@ -11,10 +11,8 @@ declare -A node_versions=(
   # TODO remove v14 after EOL: 2023-04-30
   [14.14.0]=$latest_node
 
-
   # # TODO remove v12 after EOL: 2022-04-30
   [12.19.0]="node-v12"
-
 
   # TODO remove v10 after EOL: 2021-04-30
   [10.22.1]="node-v10"

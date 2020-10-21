@@ -10,15 +10,25 @@ gesso_pathname="$3"
 ancillary_tags="$4"
 
 echo "--- Build"
+
+# Holds arguments to docker build
+docker_args=()
+tag=''
+
+for tag in $ancillary_tags; do
+  tag="$repository:$tag"
+  docker_args+=(--tag $tag)
+done
+
 docker build . \
-  --tag "$repository:$ancillary_tags" \
+  "${docker_args[@]}" \
   --build-arg PHP_VERSION="$php_version" \
   --build-arg NODE_VERSION="$node_version"
 
 # Sanity check: Ensure built image is compatible with Gesso 4.x
 echo "--- Test"
 docker run --rm -it \
-  "$repository:$ancillary_tags" \
+  "$tag" \
   sh -c "
     curl -sSLO \"https://github.com/forumone/gesso/archive/${gesso_pathname}.zip\" &&
     unzip \"${gesso_pathname}.zip\" &&
