@@ -71,10 +71,6 @@ for gesso_version in "${!gesso_versions[@]}"; do
   for node_version in "${!node_versions[@]}"; do
     for php_version in "${!php_versions[@]}"; do
       tags="${gesso_version}-${node_versions[$node_version]}-${php_versions[$php_version]}"
-      
-      echo "${gesso_versions[$gesso_version]} $latest_gesso"
-      echo "${node_versions[$node_version]} $latest_node"
-      echo "${php_versions[$php_version]} $latest_php"
 
       if [ "${gesso_versions[$gesso_version]}" ==  $latest_gesso ] \
       && [ "${node_versions[$node_version]}" == $latest_node ] \
