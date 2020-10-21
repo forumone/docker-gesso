@@ -39,6 +39,8 @@ create-step() {
   # Output the Buildkite step for building this particular version
   cat <<YAML
   - label: ":docker: :docker-gesso: v$label"
+    agents:
+      queue: docker-builders
     concurrency: 6
     concurrency_group: "f1/docker"
     commands:
