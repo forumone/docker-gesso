@@ -3,30 +3,34 @@
 set -euo pipefail
 shopt -s extglob
 
+latest_node="node-v14"
+latest_php="php-7.4"
+latest_gesso="4.x"
+
 declare -A node_versions=(
-  # TODO remove v10 after EOL: 2021-04-30
-  [10.22.1]="node-v10"
+  # TODO remove v14 after EOL: 2023-04-30
+  [14.14.0]=$latest_node
 
   # # TODO remove v12 after EOL: 2022-04-30
   [12.19.0]="node-v12"
 
-  # TODO remove v14 after EOL: 2023-04-30
-  [14.14.0]="node-v14"
+  # TODO remove v10 after EOL: 2021-04-30
+  [10.22.1]="node-v10"
 )
 
 declare -A php_versions=(
+  # TODO remove 7.4 after EOL: 2022-11-28
+  [7.4]=$latest_php
+
   # TODO remove 7.3 after EOL: 2021-12-06
   [7.3]="php-7.3"
-
-  # TODO remove 7.4 after EOL: 2022-11-28
-  [7.4]="php-7.4"
 )
 
 declare -A gesso_versions=(
   # Key is used for tagging while the value is used for the github archive
   # This is unforunately backwards from the above due to limitations on the key in shell
+  [4]=$latest_gesso
   [3]='8.x-3.x'
-  [4]="4.x"
 )
 
 # Usage: create-step <php_version> <node_version> <gesso_pathname> <label>
@@ -65,6 +69,13 @@ for gesso_version in "${!gesso_versions[@]}"; do
   for node_version in "${!node_versions[@]}"; do
     for php_version in "${!php_versions[@]}"; do
       tags="${gesso_version}-${node_versions[$node_version]}-${php_versions[$php_version]}"
+
+      if [ "${gesso_versions[$gesso_version]}" ==  $latest_gesso ] \
+      && [ "${node_versions[$node_version]}" == $latest_node ] \
+      && [ "${php_versions[$php_version]}" == $latest_php ]; then
+        tags="$tags latest"
+      fi
+
       create-step "$php_version" "$node_version" "${gesso_versions[$gesso_version]}" "$tags"
     done
   done
