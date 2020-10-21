@@ -6,7 +6,8 @@ repository=forumone/gesso
 
 php_version="$1"
 node_version="$2"
-ancillary_tags="$3"
+gesso_pathname="$3"
+ancillary_tags="$4"
 
 echo "--- Build"
 docker build . \
@@ -18,13 +19,13 @@ docker build . \
 echo "--- Test"
 docker run --rm -it \
   "$repository:$ancillary_tags" \
-  sh -c '
-    curl -sSLO "https://github.com/forumone/gesso/archive/4.x.zip" &&
-    unzip "4.x.zip" &&
-    cd "gesso-4.x" &&
+  sh -c "
+    curl -sSLO \"https://github.com/forumone/gesso/archive/${gesso_pathname}.zip\" &&
+    unzip \"${gesso_pathname}.zip\" &&
+    cd \"gesso-${gesso_pathname}\" &&
     npm ci &&
     gulp build
-  '
+  "
 
 # Usage: should-push
 #
