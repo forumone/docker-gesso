@@ -10,14 +10,14 @@ ancillary_tags="$3"
 
 echo "--- Build"
 docker build . \
-  --tag "$ancillary_tags" \
+  --tag "$repository:$ancillary_tags" \
   --build-arg PHP_VERSION="$php_version" \
   --build-arg NODE_VERSION="$node_version"
 
 # Sanity check: Ensure built image is compatible with Gesso 4.x
 echo "--- Test"
 docker run --rm -it \
-  "$repository:latest" \
+  "$repository:$ancillary_tags" \
   sh -c '
     curl -sSLO "https://github.com/forumone/gesso/archive/4.x.zip" &&
     unzip "4.x.zip" &&

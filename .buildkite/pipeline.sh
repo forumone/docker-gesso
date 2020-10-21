@@ -24,12 +24,12 @@ declare -A php_versions=(
   [7.4]="php-7.4"
 )
 
-# Usage: create-step <php_version> <node_version> <tags> <label>
+# Usage: create-step <php_version> <node_version> <label>
 create-step() {
   local php_version="$1"
   local node_version="$2"
-  local tags="$3 $4"
-  local label="$4"
+  local tags="$3"
+  local label="$3"
 
   # Output the Buildkite step for building this particular version
   cat <<YAML
@@ -57,7 +57,6 @@ YAML
 for node_version in "${!node_versions[@]}"; do
   for php_version in "${!php_versions[@]}"; do
     tags="${gesso_version}-${node_versions[$node_version]}-${php_versions[$php_version]}"
-    label="${gesso_version}-${node_versions[$node_version]}-${php_versions[$php_version]}"
-    create-step "$php_version" "$node_version" "$tags" "$label"
+    create-step "$php_version" "$node_version" "$tags"
   done
 done
