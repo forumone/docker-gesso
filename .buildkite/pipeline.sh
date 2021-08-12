@@ -4,7 +4,7 @@ set -euo pipefail
 shopt -s extglob
 
 latest_node="node-v14"
-latest_php="php-7.4"
+latest_php="php-8.0"
 latest_gesso="4.x"
 
 declare -A node_versions=(
@@ -19,8 +19,11 @@ declare -A node_versions=(
 )
 
 declare -A php_versions=(
+  # TODO i have no idea what im doing
+  [8.0]=$latest_php
+  
   # TODO remove 7.4 after EOL: 2022-11-28
-  [7.4]=$latest_php
+  [7.4]="php-7.4"
 
   # TODO remove 7.3 after EOL: 2021-12-06
   [7.3]="php-7.3"
