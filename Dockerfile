@@ -1,5 +1,5 @@
 ARG PHP_VERSION
-FROM php:${PHP_VERSION}-cli-alpine3.13
+FROM php:${PHP_VERSION}-cli-alpine
 
 ARG NODE_VERSION
 
