@@ -11,7 +11,7 @@ declare -A node_versions=(
   # TODO remove v14 after EOL: 2023-04-30
   [14.14.0]=$latest_node
 
-  # # TODO remove v12 after EOL: 2022-04-30
+  # TODO remove v12 after EOL: 2022-04-30
   [12.19.0]="node-v12"
 
   # TODO remove v10 after EOL: 2021-04-30
@@ -19,6 +19,8 @@ declare -A node_versions=(
 )
 
 declare -A php_versions=(
+  [8.0]="php-8.0"
+
   # TODO remove 7.4 after EOL: 2022-11-28
   [7.4]=$latest_php
 
