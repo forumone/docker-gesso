@@ -30,7 +30,7 @@ RUN set -ex \
   && npm i -g envinfo gulp-cli
 
 # Need to add these to allow for gyp to build for the gesso theme
-RUN apk add --no cach python3 \
+RUN apk add --no-cach python3 \
   g++ \
   make
 
