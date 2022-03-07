@@ -19,7 +19,7 @@ declare -A node_versions=(
 )
 
 declare -A php_versions=(
-  [8.0]=latest_php
+  [8.0]=$latest_php
 
   # TODO remove 7.4 after EOL: 2022-11-28
   [7.4]="php-7.4"
