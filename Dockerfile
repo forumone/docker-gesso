@@ -29,6 +29,12 @@ RUN set -ex \
   && apk del .build-deps \
   && npm i -g envinfo gulp-cli
 
+# Need to add these to allow for gyp to build for the gesso theme
+RUN apk add --no-cach python3 \
+  g++ \
+  make
+
+
 # Default working directory to /app - this gives folks a predicable location for builds
 # and artifacts.
 WORKDIR /app

@@ -52,5 +52,5 @@ should-push() {
 
 if should-push; then
   echo "--- Push"
-  docker push "$repository"
+  docker push --all-tags "$repository"
 fi
