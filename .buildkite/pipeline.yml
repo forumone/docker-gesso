@@ -22,7 +22,7 @@ definitions:
   docker-build: &docker-build
     - "docker build -t $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION=$(buildkite-agent meta-data get node_specific_version) ."
   docker-push: &docker-push
-    - "docker push $DOCKER_HUB_REPO:{{matrix.composer_version}}-php-{{matrix.php}}"
+    - "docker push $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}"
   queues:
     # Docker-based tasks should run in the Docker queue.
     docker-agents: &docker-agents
