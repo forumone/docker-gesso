@@ -3,6 +3,7 @@ FROM php:${PHP_VERSION}-cli-alpine
 
 ARG NODE_VERSION
 
+
 RUN set -ex \
   && cd /tmp \
   && apk add --no-cache libstdc++ \
@@ -14,8 +15,8 @@ RUN set -ex \
     gnupg \
     libgcc \
     linux-headers \
+    python3 \
     make \
-    python2 \
   && curl --fail --show-error --silent --remote-name "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}.tar.xz" \
   && curl --fail --show-error --silent --remote-name "https://nodejs.org/dist/v${NODE_VERSION}/SHASUMS256.txt" \
   && grep " node-v${NODE_VERSION}.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
@@ -28,11 +29,6 @@ RUN set -ex \
   && rm -r "node-v${NODE_VERSION}" "node-v${NODE_VERSION}.tar.xz" SHASUMS256.txt \
   && apk del .build-deps \
   && npm i -g envinfo gulp-cli
-
-# Need to add these to allow for gyp to build for the gesso theme
-RUN apk add --no-cach python3 \
-  g++ \
-  make
 
 
 # Default working directory to /app - this gives folks a predicable location for builds
