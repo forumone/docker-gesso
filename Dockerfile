@@ -1,8 +1,7 @@
 ARG PHP_VERSION
-FROM php:${PHP_VERSION}-cli-alpine
+FROM php:${PHP_VERSION}-cli-alpine3.15
 
 ARG NODE_VERSION
-
 
 RUN set -ex \
   && cd /tmp \
@@ -16,6 +15,7 @@ RUN set -ex \
     libgcc \
     linux-headers \
     python3 \
+    python2 \
     make \
   && curl --fail --show-error --silent --remote-name "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}.tar.xz" \
   && curl --fail --show-error --silent --remote-name "https://nodejs.org/dist/v${NODE_VERSION}/SHASUMS256.txt" \
