@@ -40,6 +40,7 @@ definitions:
 
 steps:
   - label: "Get node version"
+    key: get-node-version
     command: |
       if [ {{matrix.node_version}} == 16 ]; then
         buildkite-agent meta-data set "node_specific_version" "16.18.0"
@@ -54,7 +55,10 @@ steps:
         buildkite-agent meta-data set "node_specific_version" "10.24.1"
       fi;
 
+  - wait: ~
   - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}"
+    depends_on:
+      - get-node-version
     <<: *docker-agents
     retry:
       automatic:
@@ -66,8 +70,11 @@ steps:
       - *docker-build
     matrix:
       <<: *matrix-setup
+
   - label: ":pipeline: Deploy :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}"
     <<: *docker-agents
+    depends_on:
+      - get-node-version
     plugins:
       <<: *seek
       <<: *docker-login
