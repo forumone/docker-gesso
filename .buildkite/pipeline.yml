@@ -39,27 +39,7 @@ definitions:
         password-env: DOCKER_LOGIN_PASSWORD
 
 steps:
-  - label: "Get node version"
-    key: get-node-version
-    command: |
-      buildkite-agent meta-data set "node-specific-version" "16.18.0"
-      if [ {{matrix.node_version}} == 16 ]; then
-        buildkite-agent meta-data set "node-specific-version" "16.18.0"
-      fi;
-      if [ {{matrix.node_version}} == 14 ]; then
-        buildkite-agent meta-data set "node-specific-version" "14.21.0"
-      fi;
-      if [ {{matrix.node_version}} == 12 ]; then
-        buildkite-agent meta-data set "node-specific-version" "12.22.12"
-      fi;
-      if [ {{matrix.node_version}} == 10 ]; then
-        buildkite-agent meta-data set "node-specific-version" "10.24.1"
-      fi;
-
-  - wait: ~
   - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}"
-    depends_on:
-      - get-node-version
     <<: *docker-agents
     retry:
       automatic:
@@ -68,14 +48,27 @@ steps:
     branches:
       - !master
     command:
-      - *docker-build
+      - |
+        buildkite-agent meta-data set "node-specific-version" "16.18.0"
+        if [ {{matrix.node_version}} == 16 ]; then
+          buildkite-agent meta-data set "node-specific-version" "16.18.0"
+        fi;
+        if [ {{matrix.node_version}} == 14 ]; then
+          buildkite-agent meta-data set "node-specific-version" "14.21.0"
+        fi;
+        if [ {{matrix.node_version}} == 12 ]; then
+          buildkite-agent meta-data set "node-specific-version" "12.22.12"
+        fi;
+        if [ {{matrix.node_version}} == 10 ]; then
+          buildkite-agent meta-data set "node-specific-version" "10.24.1"
+        fi;
+
+        docker build -t $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION=$(buildkite-agent meta-data get node-specific-version) .
     matrix:
       <<: *matrix-setup
 
   - label: ":pipeline: Deploy :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}"
     <<: *docker-agents
-    depends_on:
-      - get-node-version
     plugins:
       <<: *seek
       <<: *docker-login
