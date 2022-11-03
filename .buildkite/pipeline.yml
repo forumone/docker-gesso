@@ -42,6 +42,7 @@ steps:
   - label: "Get node version"
     key: get-node-version
     command: |
+      buildkite-agent meta-data set "node-specific-version" "16.18.0"
       if [ {{matrix.node_version}} == 16 ]; then
         buildkite-agent meta-data set "node-specific-version" "16.18.0"
       fi;
