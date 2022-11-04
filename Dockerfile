@@ -3,6 +3,10 @@ ARG PHP_VERSION
 
 FROM node:${NODE_VERSION}-alpine3.15 as nodeJs
 
+USER root
+
+RUN chown -R root:root /opt
+
 FROM php:${PHP_VERSION}-cli-alpine3.15
 
 RUN set -ex \
@@ -10,9 +14,9 @@ RUN set -ex \
   && apk add --no-cache libstdc++
 
 # Instead of building node from source, just pulling a compiled version already
-COPY --chown=root:root --from=nodeJs /usr/local/bin/node /usr/local/bin/node
-COPY --chown=root:root --from=nodeJs /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --chown=root:root --from=nodeJs /opt /opt
+COPY --from=nodeJs /usr/local/bin/node /usr/local/bin/node
+COPY --from=nodeJs /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=nodeJs /opt /opt
 
 # Making the correct symlinks needed for node
 RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
