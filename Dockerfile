@@ -14,7 +14,7 @@ RUN set -ex \
 # Instead of building node from source, just pulling a compiled version already
 COPY --from=nodeJs /usr/local/bin/node /usr/local/bin/node
 COPY --from=nodeJs /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --from=nodeJs /opt /opt
+COPY --from=nodeJs /opt/ /opt/
 # Making the correct symlinks needed for node
 RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
 RUN ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
