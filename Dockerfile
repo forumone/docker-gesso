@@ -1,38 +1,35 @@
-ARG PHP_VERSION
-FROM php:${PHP_VERSION}-cli-alpine
-
 ARG NODE_VERSION
+ARG PHP_VERSION
 
-RUN set -ex \
-  && cd /tmp \
-  && apk add --no-cache libstdc++ \
-  && apk add --no-cache --virtual .build-deps \
-    binutils-gold \
-    curl \
-    g++ \
-    gcc \
-    gnupg \
-    libgcc \
-    linux-headers \
-    make \
+FROM node:${NODE_VERSION}-alpine3.15 as nodeJs
+
+USER root
+
+RUN chown -R root:root /opt
+
+FROM php:${PHP_VERSION}-cli-alpine3.15
+
+# This is needed forhte time being since node module: fiber is being used in gesso
+# https://github.com/forumone/gesso/issues/626
+
+RUN apk add --no-cache libstdc++ \
+    python3 \
     python2 \
-  && curl --fail --show-error --silent --remote-name "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}.tar.xz" \
-  && curl --fail --show-error --silent --remote-name "https://nodejs.org/dist/v${NODE_VERSION}/SHASUMS256.txt" \
-  && grep " node-v${NODE_VERSION}.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
-  && tar -xf "node-v${NODE_VERSION}.tar.xz" \
-  && cd "node-v${NODE_VERSION}" \
-  && ./configure \
-  && make -j$(nproc) >/dev/null \
-  && make install \
-  && cd /tmp \
-  && rm -r "node-v${NODE_VERSION}" "node-v${NODE_VERSION}.tar.xz" SHASUMS256.txt \
-  && apk del .build-deps \
-  && npm i -g envinfo gulp-cli
+    make \
+    g++
 
-# Need to add these to allow for gyp to build for the gesso theme
-RUN apk add --no-cach python3 \
-  g++ \
-  make
+# Instead of building node from source, just pulling a compiled version already
+COPY --from=nodeJs /usr/local/bin/node /usr/local/bin/node
+COPY --from=nodeJs /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=nodeJs /opt /opt
+
+# Making the correct symlinks needed for node
+RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
+RUN ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+RUN ln -s /opt/*/bin/yarn /usr/local/bin/yarn
+RUN ln -s /opt/*/bin/yarnpkg /usr/local/bin/yarnpkg
+
+RUN npm i -g envinfo gulp-cli
 
 
 # Default working directory to /app - this gives folks a predicable location for builds
