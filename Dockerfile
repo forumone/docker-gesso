@@ -9,17 +9,14 @@ RUN chown -R root:root /opt
 
 FROM php:${PHP_VERSION}-cli-alpine3.15
 
+# This is needed forhte time being since node module: fiber is being used in gesso
+# https://github.com/forumone/gesso/issues/626
+
 RUN apk add --no-cache libstdc++ \
     python3 \
     python2 \
     make \
     g++
-
-# This is needed forhte time being since node module: fiber is being used in gesso
-# https://github.com/forumone/gesso/issues/626
-RUN apk add --virtual .build-deps
-
-RUN apk del .build-deps
 
 # Instead of building node from source, just pulling a compiled version already
 COPY --from=nodeJs /usr/local/bin/node /usr/local/bin/node
