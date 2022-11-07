@@ -40,6 +40,8 @@ definitions:
 steps:
   - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}"
     <<: *docker-agents
+    concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
+    concurrency: 4
     retry:
       automatic:
         - exit_status: -1
