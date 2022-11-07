@@ -55,6 +55,7 @@ steps:
 
   - label: ":pipeline: Deploy :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}"
     <<: *docker-agents
+    concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
     concurrency: 4
     plugins:
       <<: *seek
