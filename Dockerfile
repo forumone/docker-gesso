@@ -9,9 +9,7 @@ RUN chown -R root:root /opt
 
 FROM php:${PHP_VERSION}-cli-alpine3.15
 
-RUN set -ex \
-  && cd /tmp \
-  && apk add --no-cache libstdc++ \
+RUN apk add --no-cache libstdc++ \
     python3 \
     python2 \
     make \
