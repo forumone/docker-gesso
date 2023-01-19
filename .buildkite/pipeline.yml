@@ -50,7 +50,7 @@ steps:
       - !master
     command: |
       if [ "{{matrix.gesso_version}}" == "5" ]; then
-        LINUX_DISTRO=debian";
+        LINUX_DISTRO=debian;
       else
         LINUX_DISTRO=alpine;
       fi
