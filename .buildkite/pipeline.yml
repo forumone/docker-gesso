@@ -19,7 +19,7 @@ definitions:
         - "5"
         - "4"
   docker-build: &docker-build
-    - "docker build -f Dockerfile-$(buildkite-agent meta-data get linux_distro) -t $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
+    - "docker build -f Dockerfile-if [ {{matrix.gesso_version}} == \"5\" ]; then \"debian\"; else  echo \"alpine\"; fi -t $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
   docker-push: &docker-push
     - "docker push $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}"
   queues:
@@ -59,9 +59,10 @@ steps:
           limit: 2
     branches:
       - !master
-    command:
-      - ""
-      - *docker-build
+    command: |
+      linux_distro=if [ {{matrix.gesso_version}} == "5" ]; then echo "debian"; else  echo "alpine"; fi
+      docker build -f Dockerfile-${linux_distro}}-t $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
+
     matrix:
       <<: *matrix-setup
 
