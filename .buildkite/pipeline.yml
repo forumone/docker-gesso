@@ -1,6 +1,5 @@
 env:
   DOCKER_HUB_REPO: 'forumone/gesso'
-  LINUX_DISTRO: 'alpine'
 
 # Consolidate the common configuration for reuse across multiple steps.
 definitions:
@@ -38,8 +37,9 @@ definitions:
         username: f1builder
         password-env: DOCKER_LOGIN_PASSWORD
 steps:
-  - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
+  - label: "setting up build step"
     <<: *docker-agents
+    key: ${matrix.gesso_version}-${matrix.php}-${node_version}
     concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
     concurrency: 4
     retry:
@@ -49,29 +49,66 @@ steps:
     branches:
       - !master
     command: |
-      if [[ {{matrix.gesso_version}} == 5 ]]; then
-        LINUX_DISTRO=debian
+      if [[ 5 == 5 ]]; then
+       buildkite-agent meta-data set "LINUX_DISTRO" "debian"
+       export LINUX_DISTRO=debian
+      else
+        buildkite-agent meta-data set "LINUX_DISTRO" "alpine"
       fi
+
+    #command: |
+      #if [[ {{matrix.gesso_version}} == 5 ]]; then
+      #  LINUX_DISTRO=debian
+      #fi
       #docker build -f Dockerfile-$(buildkite-agent meta-data get LINUX_DISTRO) $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} .
-      docker build -f Dockerfile-${LINUX_DISTRO} $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} .
+      # docker build -f Dockerfile-${LINUX_DISTRO} $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} .
+    matrix:
+      <<: *matrix-setup
+  - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
+    depends_on: ${matrix.gesso_version}-${matrix.php}-${node_version}
+    command:
+      - docker build -f Dockerfile-$(buildkite-agent meta-data get "LINUX_DISTRO") $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} .
     matrix:
       <<: *matrix-setup
 
-  - label: ":pipeline: Deploy :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
-    <<: *docker-agents
-    concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
-    concurrency: 4
-    plugins:
-      <<: *seek
-      <<: *docker-login
-    branches:
-      - master
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-    command:
-      - *docker-build
-      - *docker-push
-    matrix:
-      <<: *matrix-setup
+#
+#
+#
+#
+#  - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
+#    <<: *docker-agents
+#    concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
+#    concurrency: 4
+#    retry:
+#      automatic:
+#        - exit_status: -1
+#          limit: 2
+#    branches:
+#      - !master
+#    command: |
+#      if [[ {{matrix.gesso_version}} == 5 ]]; then
+#        LINUX_DISTRO=debian
+#      fi
+#      #docker build -f Dockerfile-$(buildkite-agent meta-data get LINUX_DISTRO) $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} .
+#      docker build -f Dockerfile-${LINUX_DISTRO} $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} .
+#    matrix:
+#      <<: *matrix-setup
+#
+#  - label: ":pipeline: Deploy :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
+#    <<: *docker-agents
+#    concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
+#    concurrency: 4
+#    plugins:
+#      <<: *seek
+#      <<: *docker-login
+#    branches:
+#      - master
+#    retry:
+#      automatic:
+#        - exit_status: -1
+#          limit: 2
+#    command:
+#      - *docker-build
+#      - *docker-push
+#    matrix:
+#      <<: *matrix-setup
