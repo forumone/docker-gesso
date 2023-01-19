@@ -51,8 +51,6 @@ steps:
     command: |
       if [[ {{matrix.gesso_version}} == 5 ]]; then
         LINUX_DISTRO=debian;
-      else
-        LINUX_DISTRO=alpine;
       fi
       echo ${LINUX_DISTRO} $LINUX_DISTRO
       #docker build -f Dockerfile-${LINUX_DISTRO} $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
