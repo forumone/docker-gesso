@@ -50,7 +50,7 @@ steps:
 
   - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
     <<: *docker-agents
-    depend_on: set-env
+    depends_on: set-env
     concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
     concurrency: 4
     retry:
@@ -67,7 +67,7 @@ steps:
 
   - label: ":pipeline: Deploy :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
     <<: *docker-agents
-    depend_on: set-env
+    depends_on: set-env
     concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
     concurrency: 4
     plugins:
