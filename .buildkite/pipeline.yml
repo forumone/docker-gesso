@@ -49,7 +49,7 @@ steps:
     branches:
       - !master
     command: |
-      if [ "{{matrix.gesso_version}}" == "5" ]; then
+      if [[ "{{matrix.gesso_version}}" == "5" ]]; then
         LINUX_DISTRO=debian;
       else
         LINUX_DISTRO=alpine;
