@@ -49,9 +49,8 @@ steps:
     branches:
       - !master
     command: |
-      if [[ 5 == 5 ]]; then
+      if [[ ${matrix.gesso_version} == 5 ]]; then
        buildkite-agent meta-data set "LINUX_DISTRO" "debian"
-       export LINUX_DISTRO=debian
       else
         buildkite-agent meta-data set "LINUX_DISTRO" "alpine"
       fi
