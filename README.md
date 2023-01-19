@@ -10,14 +10,13 @@ Image tags for Gesso 3 & 4 are derived from a set of the following components:
 
 #### Node Version
 
-* 12
 * 14
 * 16
 
 #### PHP Version
 
-* 7.4
 * 8.0
+* 8.1
 
 #### Gesso Version
 

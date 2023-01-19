@@ -9,22 +9,19 @@ definitions:
   matrix-setup: &matrix-setup
     setup:
       php:
-        - "7.4"
         - "8.0"
+        - "8.1"
       node_version:
+        - "18"
         - "16"
         - "14"
-        - "12"
       gesso_version:
+        - "5"
         - "4"
-        - "3"
-      linux_distro:
-        - "alpine"
-        - "debian"
   docker-build: &docker-build
-    - "docker build -f Dockerfile-{{matrix.linux_distro}} -t $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
+    - "docker build -f Dockerfile-$(buildkite-agent meta-data get linux_distro) -t $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
   docker-push: &docker-push
-    - "docker push $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
+    - "docker push $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}"
   queues:
     # Docker-based tasks should run in the Docker queue.
     docker-agents: &docker-agents
@@ -41,8 +38,19 @@ definitions:
         password-env: DOCKER_LOGIN_PASSWORD
 
 steps:
+  - label: ":pipeline: Set Build/Deployment Environment"
+    key: "set-env"
+    # See https://buildkite.com/docs/agent/v3/cli-meta-data
+    command: |
+      if [ {{matrix.gesso_version}} == "5" ]; then buildkite-agent meta-data set "linux_distro" "debian"; else  buildkite-agent meta-data set "linux_distro" "alpine"; fi
+    matrix:
+      <<: *matrix-setup
+    #buildkite-agent meta-data set "gesso-env" "{{matrix.gesso_version}}"
+#    if [ $1 == "5" ]; then echo "export linux_distro=$(buildkite-agent meta-data set release_type)"; else  echo "-alpine"; fi
+
   - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
     <<: *docker-agents
+    depend_on: set-env
     concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
     concurrency: 4
     retry:
@@ -52,12 +60,14 @@ steps:
     branches:
       - !master
     command:
+      - ""
       - *docker-build
     matrix:
       <<: *matrix-setup
 
   - label: ":pipeline: Deploy :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
     <<: *docker-agents
+    depend_on: set-env
     concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
     concurrency: 4
     plugins:
