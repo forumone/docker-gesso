@@ -63,12 +63,12 @@ steps:
       # docker build -f Dockerfile-${LINUX_DISTRO} $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} .
     matrix:
       <<: *matrix-setup
-  - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
-    depends_on: ${matrix.gesso_version}-${matrix.php}-${node_version}
-    command:
-      - docker build -f Dockerfile-$(buildkite-agent meta-data get "LINUX_DISTRO") $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} .
-    matrix:
-      <<: *matrix-setup
+#  - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
+#    depends_on: ${matrix.gesso_version}-${matrix.php}-${node_version}
+#    command:
+#      - docker build -f Dockerfile-$(buildkite-agent meta-data get "LINUX_DISTRO") $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} .
+#    matrix:
+#      <<: *matrix-setup
 
 #
 #
