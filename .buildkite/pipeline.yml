@@ -1,5 +1,6 @@
 env:
   DOCKER_HUB_REPO: 'forumone/gesso'
+  LINUX_DISTRO: 'alpine'
 
 # Consolidate the common configuration for reuse across multiple steps.
 definitions:
@@ -36,7 +37,6 @@ definitions:
       docker-login#v2.0.1:
         username: f1builder
         password-env: DOCKER_LOGIN_PASSWORD
-
 steps:
   - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
     <<: *docker-agents
