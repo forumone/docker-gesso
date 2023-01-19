@@ -54,7 +54,8 @@ steps:
       else
         LINUX_DISTRO=alpine;
       fi
-      docker build -f Dockerfile-${LINUX_DISTRO}} $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
+      echo ${LINUX_DISTRO}
+      #docker build -f Dockerfile-${LINUX_DISTRO}} $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
 
     matrix:
       <<: *matrix-setup
