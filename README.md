@@ -29,7 +29,6 @@ Image tags for Gesso 3, 4, and 5 are derived from a set of the following compone
 * 4
 * 5
 
-
 #### No longer getting updates
 
 * Node version: 10, 12, 14
