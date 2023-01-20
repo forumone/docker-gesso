@@ -37,23 +37,27 @@ definitions:
         username: f1builder
         password-env: DOCKER_LOGIN_PASSWORD
 steps:
-  - label: "setting up build step"
-    <<: *docker-agents
-    key: ${matrix.gesso_version}-${matrix.php}-${node_version}
-    concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
-    concurrency: 4
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-    branches:
-      - !master
+  - label: "test"
+    if: {{matrix.gesso_version}} == 5
     command: |
-      if [[ ${matrix.gesso_version} == 5 ]]; then
-       buildkite-agent meta-data set "LINUX_DISTRO" "debian"
-      else
-        buildkite-agent meta-data set "LINUX_DISTRO" "alpine"
-      fi
+      echo "hi"
+#  - label: "setting up build step"
+#    <<: *docker-agents
+#    concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
+#    concurrency: 4
+#    if:
+#    retry:
+#      automatic:
+#        - exit_status: -1
+#          limit: 2
+#    branches:
+#      - !master
+#    command: |
+#      if [[ ${matrix.gesso_version} == 5 ]]; then
+#       buildkite-agent meta-data set "LINUX_DISTRO" "debian"
+#      else
+#        buildkite-agent meta-data set "LINUX_DISTRO" "alpine"
+#      fi
 
     #command: |
       #if [[ {{matrix.gesso_version}} == 5 ]]; then
