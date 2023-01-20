@@ -9,22 +9,20 @@ definitions:
   matrix-setup: &matrix-setup
     setup:
       php:
-        - "7.4"
         - "8.0"
+        - "8.1"
       node_version:
         - "16"
+        - "18"
         - "14"
         - "12"
-      gesso_version:
-        - "4"
-        - "3"
       linux_distro:
         - "alpine"
         - "debian"
   docker-build: &docker-build
-    - "docker build -f Dockerfile-{{matrix.linux_distro}} -t $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
+    - "docker build -f Dockerfile-{{matrix.linux_distro}} -t $DOCKER_HUB_REPO:node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
   docker-push: &docker-push
-    - "docker push $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
+    - "docker push $DOCKER_HUB_REPO:node-v{{matrix.node_version}}-php-{{matrix.php}}"
   queues:
     # Docker-based tasks should run in the Docker queue.
     docker-agents: &docker-agents
@@ -41,7 +39,7 @@ definitions:
         password-env: DOCKER_LOGIN_PASSWORD
 
 steps:
-  - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
+  - label: ":pipeline: Build :php: node-v{{matrix.node_version}}-php-{{matrix.php}}"
     <<: *docker-agents
     concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
     concurrency: 4
@@ -56,7 +54,7 @@ steps:
     matrix:
       <<: *matrix-setup
 
-  - label: ":pipeline: Deploy :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
+  - label: ":pipeline: Deploy :php: node-v{{matrix.node_version}}-php-{{matrix.php}}"
     <<: *docker-agents
     concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
     concurrency: 4
