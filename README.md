@@ -2,7 +2,7 @@
 
 This image is intended to be used as a base for building [Gesso](https://github.com/forumone/gesso/). For local development, the project's sources can be bind-mounted. During production builds, this image is meant to be used as part of a multi-stage build.
 
-With the new release of Gesso 5. As of Jan 19, 2023, gesso switched from using `alpine` as the base linux distro to use `buster`. That is the primary difference from the gesso images from using the `4` tag to `3`.
+With the new release of Gesso 5. As of Jan 19, 2023, gesso switched from using `alpine` as the base linux distro to use `buster`. That is the primary difference from the gesso images from using the `4` tag to `5`.
 
 ## Tags and Included Tools
 
