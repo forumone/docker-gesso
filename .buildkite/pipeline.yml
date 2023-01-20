@@ -36,7 +36,7 @@ definitions:
         password-env: DOCKER_LOGIN_PASSWORD
 
 steps:
-  - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
+  - label: ":pipeline: Build :php: node-v{{matrix.node_version}}-php-{{matrix.php}}"
     <<: *docker-agents
     concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
     concurrency: 4
@@ -51,7 +51,7 @@ steps:
     matrix:
       <<: *matrix-setup
 
-  - label: ":pipeline: Deploy :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}-{{matrix.linux_distro}}"
+  - label: ":pipeline: Deploy :php: node-v{{matrix.node_version}}-php-{{matrix.php}}"
     <<: *docker-agents
     concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
     concurrency: 4
