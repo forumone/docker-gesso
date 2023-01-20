@@ -6,9 +6,9 @@ With the new release of Gesso 5. As of Jan 19, 2023, gesso switched from using `
 
 ## Tags and Included Tools
 
-### Gesso 4 & 5
+### Gesso 3, 4, and 5
 
-Image tags for Gesso 4 & 5 are derived from a set of the following components:
+Image tags for Gesso 3, 4, and 5 are derived from a set of the following components:
 
 #### Node Version
 
@@ -25,8 +25,14 @@ Image tags for Gesso 4 & 5 are derived from a set of the following components:
 
 #### Gesso Version
 
+* 3
 * 4
 * 5
+
+
+#### No longer getting updates
+
+* Node version: 10, 12, 14
 
 These components are used to derive the image tag thusly:
 

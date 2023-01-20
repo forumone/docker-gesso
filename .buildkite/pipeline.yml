@@ -14,7 +14,9 @@ definitions:
       node_version:
         - "16"
         - "18"
+        - "14"
       gesso_version:
+        - "3"
         - "4"
         - "5"
   linux-distro-choice: &linux-distro-choice
