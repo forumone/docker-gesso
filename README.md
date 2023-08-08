@@ -22,6 +22,7 @@ Image tags for Gesso 3, 4, and 5 are derived from a set of the following compone
 * 7.4
 * 8.0
 * 8.1
+* 8.2
 
 #### Gesso Version
 
