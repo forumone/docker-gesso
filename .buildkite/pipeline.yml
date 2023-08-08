@@ -9,6 +9,7 @@ definitions:
   matrix-setup: &matrix-setup
     setup:
       php:
+        - "8.2"
         - "8.1"
         - "8.0"
       node_version:
@@ -50,7 +51,7 @@ steps:
         - exit_status: -1
           limit: 2
     branches:
-      - !master
+      - !main
     command:
       - *linux-distro-choice
       - *docker-build
@@ -65,7 +66,7 @@ steps:
       <<: *seek
       <<: *docker-login
     branches:
-      - master
+      - main
     retry:
       automatic:
         - exit_status: -1
