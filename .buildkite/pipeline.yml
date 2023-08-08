@@ -20,6 +20,15 @@ definitions:
         - "3"
         - "4"
         - "5"
+    adjustments:
+      - with:
+          php: "8.2"
+          gesso: "3"
+        skip: true
+      - with:
+          php: "8.2"
+          gesso: "4"
+        skip: true
   linux-distro-choice: &linux-distro-choice
     - "if [[ {{matrix.gesso_version}} == 5 ]]; then LINUX_DISTRO=debian; else LINUX_DISTRO=alpine; fi"
   docker-build: &docker-build
