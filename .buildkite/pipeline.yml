@@ -16,23 +16,8 @@ definitions:
         - "16"
         - "18"
         - "14"
-      gesso_version:
-        - "3"
-        - "4"
-        - "5"
-    adjustments:
-      - with:
-          php: "8.2"
-          gesso_version: "3"
-        skip: true
-      - with:
-          php: "8.2"
-          gesso_version: "4"
-        skip: true
-  linux-distro-choice: &linux-distro-choice
-    - "if [[ {{matrix.gesso_version}} == 5 ]]; then LINUX_DISTRO=debian; else LINUX_DISTRO=alpine; fi"
   docker-build: &docker-build
-    - "docker build -f Dockerfile-$$LINUX_DISTRO -t $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
+    - "docker build -f Dockerfile -t $DOCKER_HUB_REPO:node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
   docker-push: &docker-push
     - "docker push $DOCKER_HUB_REPO:{{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}"
   queues:
@@ -51,7 +36,7 @@ definitions:
         password-env: DOCKER_LOGIN_PASSWORD
 
 steps:
-  - label: ":pipeline: Build :php: {{matrix.gesso_version}}-node-v{{matrix.node_version}}-php-{{matrix.php}}"
+  - label: ":pipeline: Build :php: node-v{{matrix.node_version}}-php-{{matrix.php}}"
     <<: *docker-agents
     concurrency_group: $BUILDKITE_PIPELINE_SLUG/docker
     concurrency: 4
@@ -62,7 +47,6 @@ steps:
     branches:
       - !main
     command:
-      - *linux-distro-choice
       - *docker-build
     matrix:
       <<: *matrix-setup
@@ -81,7 +65,6 @@ steps:
         - exit_status: -1
           limit: 2
     command:
-      - *linux-distro-choice
       - *docker-build
       - *docker-push
     matrix:

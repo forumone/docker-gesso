@@ -36,11 +36,11 @@ Image tags for Gesso 3, 4, and 5 are derived from a set of the following compone
 
 These components are used to derive the image tag thusly:
 
-`forumone/gesso:{gesso-version}-node-v{node-version}-php-{php-version}}`
+`forumone/gesso:node-v{node-version}-php-{php-version}}`
 
-For instance an image with Gesso 4, Node 12, and php 7.4 would have the following image tag:
+For instance an image with  Node 18, and php 8.2 would have the following image tag:
 
-`forumone/gesso:4-node-v12-php-7.4`
+`forumone/gesso:node-v18-php-8.2`
 
 ### Gesso 2
 
