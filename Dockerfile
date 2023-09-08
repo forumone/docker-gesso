@@ -28,7 +28,7 @@ RUN ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 RUN ln -s /opt/*/bin/yarn /usr/local/bin/yarn
 RUN ln -s /opt/*/bin/yarnpkg /usr/local/bin/yarnpkg
 
-RUN npm i -g envinfo gulp-cli
+RUN npm i -g envinfo gulp-cli pm2
 
 
 # Default working directory to /app - this gives folks a predicable location for builds
