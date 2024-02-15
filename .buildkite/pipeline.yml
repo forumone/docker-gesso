@@ -47,7 +47,7 @@ steps:
     branches:
       - !main
     command:
-      - *docker-build
+      <<: *docker-build
     matrix:
       <<: *matrix-setup
 
@@ -65,7 +65,7 @@ steps:
         - exit_status: -1
           limit: 2
     command:
-      - *docker-build
-      - *docker-push
+      <<: *docker-build
+      <<: *docker-push
     matrix:
       <<: *matrix-setup
