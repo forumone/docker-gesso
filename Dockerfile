@@ -1,20 +1,19 @@
 ARG NODE_VERSION
 ARG PHP_VERSION
 
-FROM node:${NODE_VERSION}-buster as nodeJs
+FROM node:${NODE_VERSION}-bookworm as nodeJs
 
 USER root
 
 RUN chown -R root:root /opt
 
-FROM php:${PHP_VERSION}-cli-buster
+FROM php:${PHP_VERSION}-cli-bookworm
 
 ## This is needed forhte time being since node module: fiber is being used in gesso
 ## https://github.com/forumone/gesso/issues/626
 #
 RUN apt update
-RUN apt install -y python3 \
-    python2
+RUN apt install -y python3
 
 
 # Instead of building node from source, just pulling a compiled version already
@@ -28,7 +27,7 @@ RUN ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 RUN ln -s /opt/*/bin/yarn /usr/local/bin/yarn
 RUN ln -s /opt/*/bin/yarnpkg /usr/local/bin/yarnpkg
 
-RUN npm i -g envinfo gulp-cli
+RUN npm i -g envinfo gulp-cli pm2
 
 
 # Default working directory to /app - this gives folks a predicable location for builds
