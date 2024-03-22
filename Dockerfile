@@ -13,7 +13,7 @@ FROM php:${PHP_VERSION}-cli-bullseye
 ## https://github.com/forumone/gesso/issues/626
 #
 RUN apt update
-RUN apt install -y python3
+RUN apt install -y python3 python2
 
 
 # Instead of building node from source, just pulling a compiled version already

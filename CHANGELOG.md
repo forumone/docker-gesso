@@ -1,9 +1,7 @@
 03/19/2024
 ----------
 * Removed pacakage: `python2`
-* Updated from `buster` to `bookworm`
+* Updated from `buster` to `bullseye`
   * This was changed since `buster` is going EOL in June
-* Removed `node 14` from being built
-* Removed `php 8.0` from being built
 * Added `php 8.3`
 * Added `node 20` since it is the new LTS
