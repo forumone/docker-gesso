@@ -1,13 +1,13 @@
 ARG NODE_VERSION
 ARG PHP_VERSION
 
-FROM node:${NODE_VERSION}-bookworm as nodeJs
+FROM node:${NODE_VERSION}-bullseye as nodeJs
 
 USER root
 
 RUN chown -R root:root /opt
 
-FROM php:${PHP_VERSION}-cli-bookworm
+FROM php:${PHP_VERSION}-cli-bullseye
 
 ## This is needed forhte time being since node module: fiber is being used in gesso
 ## https://github.com/forumone/gesso/issues/626
