@@ -9,13 +9,15 @@ definitions:
   matrix-setup: &matrix-setup
     setup:
       php:
+        - "8.3"
         - "8.2"
         - "8.1"
         - "8.0"
       node_version:
+        - "14"
         - "16"
         - "18"
-        - "14"
+        - "20"
   docker-build: &docker-build
     "docker build -f Dockerfile -t $DOCKER_HUB_REPO:node-v{{matrix.node_version}}-php-{{matrix.php}} --build-arg PHP_VERSION={{matrix.php}} --build-arg NODE_VERSION={{matrix.node_version}} ."
   docker-push: &docker-push
