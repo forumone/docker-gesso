@@ -27,7 +27,7 @@ definitions:
     queue: docker-builders-arm
 
   docker-password: &docker-password
-    seek-oss/aws-sm#v2.3.3:
+    seek-oss/aws-sm#v2.3.2:
       env:
         F1BUILDER_DOCKER_PASSWORD: forumone/docker-hub
 
