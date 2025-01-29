@@ -1,6 +1,10 @@
+01/28/2025
+----------
+* Added `node 22`
+
 03/19/2024
 ----------
-* Removed pacakage: `python2`
+* Removed package: `python2`
 * Updated from `buster` to `bullseye`
   * This was changed since `buster` is going EOL in June
 * Added `php 8.3`
