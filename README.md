@@ -5,7 +5,7 @@ This image is intended to be used as a base for building [Gesso](https://github.
 ## Tags
 
 * Supported Node.js versions: 24, 22, 20, 18, 16, 14
-* Supported PHP versions: 8.3, 8.2, 8.1
+* Supported PHP versions: 8.5, 8.4, 8.3, 8.2, 8.1
 
 These components are used to derive the image tag thusly:
 
